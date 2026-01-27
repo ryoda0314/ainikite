@@ -1,65 +1,136 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEditor } from "@/lib/use-editor";
+import { BlockSequenceEditor } from "@/components/editor/block-sequence-editor";
+import { SlotAssignment } from "@/components/editor/slot-assignment";
+import { PresetSelector } from "@/components/editor/preset-selector";
+import { SaveShare } from "@/components/editor/save-share";
+import { SequencePlayer } from "@/components/editor/sequence-player";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { DEFAULT_MEMBER_VIDEOS } from "@/lib/constants";
+import { Suspense } from "react";
+
+function EditorContent() {
+  const editor = useEditor();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const loadId = searchParams.get("load");
+    if (loadId && isSupabaseConfigured()) {
+      supabase
+        .from("projects")
+        .select("*")
+        .eq("id", loadId)
+        .single()
+        .then(({ data }) => {
+          if (data) {
+            editor.loadProject({
+              blocks: data.blocks,
+              assignment: data.assignment,
+              template: data.template,
+              youtube: {
+                videoId: data.youtube_video_id || "",
+                startSec: data.youtube_start_sec || 0,
+              },
+              memberVideos: (data.member_videos && Object.keys(data.member_videos).length > 0) ? data.member_videos : DEFAULT_MEMBER_VIDEOS,
+            });
+          }
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
+      {/* Left column — Sidebar */}
+      <aside className="space-y-8 order-2 lg:order-1">
+        <div className="glass-panel rounded-2xl p-5 space-y-6">
+          <PresetSelector onLoad={editor.loadPreset} />
+        </div>
+        <div className="glass-panel rounded-2xl p-5 space-y-6">
+          <SaveShare
+            getProjectData={editor.toProjectData}
+            onLoad={editor.loadProject}
+          />
+        </div>
+      </aside>
+
+      {/* Main editor */}
+      <div className="space-y-8 order-1 lg:order-2">
+        <div className="glass-panel rounded-2xl p-6">
+          <BlockSequenceEditor
+            blocks={editor.state.blocks}
+            onAdd={editor.addBlock}
+            onRemove={editor.removeBlock}
+            onMove={editor.moveBlock}
+            onClear={editor.clearBlocks}
+          />
+        </div>
+        <div className="glass-panel rounded-2xl p-6">
+          <SlotAssignment
+            blocks={editor.state.blocks}
+            assignment={editor.state.assignment}
+            onAssign={editor.setAssignment}
+            onClear={editor.clearAssignment}
+            onReset={editor.resetAssignment}
+            onApplyRecommended={editor.applyRecommended}
+          />
+        </div>
+        <div className="glass-panel rounded-2xl p-5">
+          <SequencePlayer
+            blocks={editor.state.blocks}
+            assignment={editor.state.assignment}
+            memberVideos={editor.state.memberVideos}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <div className="min-h-screen">
+      {/* Header with stage spotlight effect */}
+      <header className="relative border-b border-[rgba(255,255,255,0.06)] stage-spotlight">
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(255,59,127,0.05)] via-transparent to-[rgba(124,92,255,0.05)]" />
+        <div className="relative mx-auto max-w-7xl px-6 py-6">
+          <div className="flex items-center gap-3">
+            {/* Animated accent bar */}
+            <div className="w-1 h-10 rounded-full bg-gradient-to-b from-[#ff3b7f] to-[#7c5cff] animate-glow-pulse" />
+            <div>
+              <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-wider uppercase text-[#e8e6f0]">
+                A-Frame <span className="text-[#ff3b7f]">Shout</span> Builder
+              </h1>
+              <p className="text-xs text-[#8b87a0] tracking-wide mt-0.5">
+                枠に名前を割り当てて、オリジナルテキストを生成・共有
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-7xl px-6 py-8">
+        <Suspense fallback={
+          <div className="text-center py-20">
+            <div className="w-6 h-6 border-2 border-[#ff3b7f]/30 border-t-[#ff3b7f] rounded-full animate-spin mx-auto" />
+            <p className="text-[#8b87a0] text-sm mt-3">読み込み中...</p>
+          </div>
+        }>
+          <EditorContent />
+        </Suspense>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-[rgba(255,255,255,0.04)] mt-16">
+        <div className="mx-auto max-w-7xl px-6 py-5">
+          <p className="text-[11px] text-[#5a5770]">
+            本サイトは元楽曲の歌詞を表示・保存・配布しません。YouTube動画はiframe埋め込みによる再生のみです。
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }
