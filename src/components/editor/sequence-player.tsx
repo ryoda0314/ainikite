@@ -236,6 +236,99 @@ export function SequencePlayer({ blocks, assignment, memberVideos }: Props) {
 
   preloadNextRef.current = preloadNext;
 
+  // ── Preload players when section is expanded ────────────────
+
+  const preloadPlayers = useCallback(
+    async () => {
+      const items = playlistRef.current;
+      if (items.length === 0) return;
+      if (creatingRef.current.some(Boolean)) return;
+
+      // Clean up stale player refs (containers remounted after collapse/re-expand)
+      for (let i = 0; i < NUM_SLOTS; i++) {
+        const container = getContainer(i);
+        if (container && container.children.length === 0) {
+          const pRef = getPlayerRef(i);
+          if (pRef.current) {
+            try { pRef.current.destroy(); } catch { /* */ }
+            pRef.current = null;
+          }
+          videoInSlotRef.current[i] = null;
+        }
+      }
+
+      // Collect unique videoIds from playlist (up to NUM_SLOTS)
+      const unique: { videoId: string; startSec: number }[] = [];
+      const seen = new Set<string>();
+      for (const item of items) {
+        if (!seen.has(item.video.videoId)) {
+          seen.add(item.video.videoId);
+          unique.push({ videoId: item.video.videoId, startSec: item.video.startSec });
+          if (unique.length >= NUM_SLOTS) break;
+        }
+      }
+
+      await ensureYouTubeAPI();
+
+      activeSlotRef.current = 0;
+      setActiveSlot(0);
+
+      for (let i = 0; i < unique.length; i++) {
+        const container = getContainer(i);
+        if (!container || creatingRef.current[i]) continue;
+        if (getPlayer(i)) continue;
+
+        creatingRef.current[i] = true;
+        container.innerHTML = "";
+        const el = document.createElement("div");
+        container.appendChild(el);
+
+        if (!container.isConnected) {
+          creatingRef.current[i] = false;
+          continue;
+        }
+
+        const pRef = getPlayerRef(i);
+        const slotNum = i;
+        const { videoId, startSec } = unique[i];
+
+        const p = new window.YT.Player(el, {
+          videoId,
+          width: "100%",
+          height: "100%",
+          playerVars: { autoplay: 0, start: Math.floor(startSec), rel: 0, modestbranding: 1 },
+          events: {
+            onReady() {
+              creatingRef.current[slotNum] = false;
+              pRef.current = p;
+              videoInSlotRef.current[slotNum] = videoId;
+            },
+            onStateChange(e) {
+              if (
+                e.data === window.YT.PlayerState.ENDED &&
+                activeSlotRef.current === slotNum
+              ) {
+                clearTimer();
+                goToIndexRef.current(currentIndexRef.current + 1);
+              }
+            },
+            onError() {
+              creatingRef.current[slotNum] = false;
+            },
+          },
+        });
+      }
+    },
+    [getPlayer, getContainer, getPlayerRef, clearTimer],
+  );
+
+  // Trigger preload when panel expands
+  useEffect(() => {
+    if (expanded && playlist.length > 0) {
+      preloadPlayers();
+    }
+  }, [expanded, playlist, preloadPlayers]);
+
   // ── Navigate to a specific playlist index ───────────────────
 
   const goToIndex = useCallback(

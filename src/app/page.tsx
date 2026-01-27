@@ -1,46 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { useEditor } from "@/lib/use-editor";
 import { BlockSequenceEditor } from "@/components/editor/block-sequence-editor";
 import { SlotAssignment } from "@/components/editor/slot-assignment";
 import { PresetSelector } from "@/components/editor/preset-selector";
-import { SaveShare } from "@/components/editor/save-share";
 import { SequencePlayer } from "@/components/editor/sequence-player";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
-import { DEFAULT_MEMBER_VIDEOS } from "@/lib/constants";
-import { Suspense } from "react";
 
 function EditorContent() {
   const editor = useEditor();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const loadId = searchParams.get("load");
-    if (loadId && isSupabaseConfigured()) {
-      supabase
-        .from("projects")
-        .select("*")
-        .eq("id", loadId)
-        .single()
-        .then(({ data }) => {
-          if (data) {
-            editor.loadProject({
-              blocks: data.blocks,
-              assignment: data.assignment,
-              template: data.template,
-              youtube: {
-                videoId: data.youtube_video_id || "",
-                startSec: data.youtube_start_sec || 0,
-              },
-              memberVideos: (data.member_videos && Object.keys(data.member_videos).length > 0) ? data.member_videos : DEFAULT_MEMBER_VIDEOS,
-            });
-          }
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
@@ -48,12 +15,6 @@ function EditorContent() {
       <aside className="space-y-8 order-2 lg:order-1">
         <div className="glass-panel rounded-2xl p-5 space-y-6">
           <PresetSelector onLoad={editor.loadPreset} />
-        </div>
-        <div className="glass-panel rounded-2xl p-5 space-y-6">
-          <SaveShare
-            getProjectData={editor.toProjectData}
-            onLoad={editor.loadProject}
-          />
         </div>
       </aside>
 
@@ -75,7 +36,7 @@ function EditorContent() {
             onAssign={editor.setAssignment}
             onClear={editor.clearAssignment}
             onReset={editor.resetAssignment}
-            onApplyRecommended={editor.applyRecommended}
+            onApplyRandom={editor.applyRandom}
           />
         </div>
         <div className="glass-panel rounded-2xl p-5">
@@ -113,14 +74,7 @@ export default function HomePage() {
       </header>
 
       <main className="mx-auto max-w-7xl px-6 py-8">
-        <Suspense fallback={
-          <div className="text-center py-20">
-            <div className="w-6 h-6 border-2 border-[#ff3b7f]/30 border-t-[#ff3b7f] rounded-full animate-spin mx-auto" />
-            <p className="text-[#8b87a0] text-sm mt-3">読み込み中...</p>
-          </div>
-        }>
-          <EditorContent />
-        </Suspense>
+        <EditorContent />
       </main>
 
       {/* Footer */}

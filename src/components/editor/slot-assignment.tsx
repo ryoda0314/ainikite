@@ -18,10 +18,10 @@ interface Props {
   onAssign: (key: string, name: string) => void;
   onClear: (key: string) => void;
   onReset: () => void;
-  onApplyRecommended: () => void;
+  onApplyRandom: () => void;
 }
 
-export function SlotAssignment({ blocks, assignment, onAssign, onClear, onReset, onApplyRecommended }: Props) {
+export function SlotAssignment({ blocks, assignment, onAssign, onClear, onReset, onApplyRandom }: Props) {
   const expanded = expandBlocksWithKeys(blocks);
   const [editingKey, setEditingKey] = useState<string | null>(null);
 
@@ -51,8 +51,8 @@ export function SlotAssignment({ blocks, assignment, onAssign, onClear, onReset,
           </h3>
         </div>
         <div className="flex gap-2">
-          <button onClick={onApplyRecommended} className="text-[11px] text-[#8b87a0] hover:text-[#ffb830] transition-colors duration-200 tracking-wide uppercase px-2 py-1 rounded hover:bg-[rgba(255,184,48,0.06)]">
-            推奨
+          <button onClick={onApplyRandom} className="text-[11px] text-[#8b87a0] hover:text-[#ffb830] transition-colors duration-200 tracking-wide uppercase px-2 py-1 rounded hover:bg-[rgba(255,184,48,0.06)]">
+            ランダム
           </button>
           <button onClick={onReset} className="text-[11px] text-[#8b87a0] hover:text-[#ff3b7f] transition-colors duration-200 tracking-wide uppercase px-2 py-1 rounded hover:bg-[rgba(255,59,127,0.06)]">
             リセット

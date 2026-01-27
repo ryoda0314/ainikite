@@ -71,13 +71,14 @@ export function useEditor(initial?: Partial<EditorState>) {
     setState((s) => ({ ...s, assignment: {} }));
   }, []);
 
-  /** Fill all positions with the first recommended candidate for their slot type */
-  const applyRecommended = useCallback(() => {
+  /** Fill all positions with a random candidate for their slot type */
+  const applyRandom = useCallback(() => {
     setState((s) => {
       const expanded = expandBlocksWithKeys(s.blocks);
       const newAssignment: Assignment = { ...s.assignment };
       for (const info of expanded) {
-        newAssignment[info.key] = SLOT_CANDIDATES[info.slot][0];
+        const candidates = SLOT_CANDIDATES[info.slot];
+        newAssignment[info.key] = candidates[Math.floor(Math.random() * candidates.length)];
       }
       return { ...s, assignment: newAssignment };
     });
@@ -154,7 +155,7 @@ export function useEditor(initial?: Partial<EditorState>) {
     setAssignment,
     clearAssignment,
     resetAssignment,
-    applyRecommended,
+    applyRandom,
     setTemplate,
     setYouTube,
     setMemberVideo,
