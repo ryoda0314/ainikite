@@ -18,8 +18,8 @@ export const SLOT_CANDIDATES: Record<Slot, string[]> = {
   A1: ["心花りり", "虹羽みに"],
   A2: ["深月らむ", "向日えな", "福丸うさ", "涼芽なの", "那蘭のどか"],
   A3: ["天羽しおり", "若葉のあ", "日日にこり", "空詩かれん", "甘音ゆあ"],
-  B1: ["純嶺みき"],
-  B2: ["有栖るな", "小熊まむ"],
+  B1: ["純嶺みき", "華瀬まい"],
+  B2: ["有栖るな", "小熊まむ", "こるね"],
   B3: ["あいす"],
 };
 
@@ -144,6 +144,31 @@ export const DEFAULT_MEMBER_VIDEOS: MemberVideos = {
   "有栖るな": { videoId: "rhb0CsHfmLo", startSec: 160.42, endSec: 171.1 },
   "涼芽なの": { videoId: "6Spe-x03YfU", startSec: 115.8, endSec: 126.2 },
   "日日にこり": { videoId: "6Spe-x03YfU", startSec: 126.59, endSec: 166.5 },
+};
+
+/** Member color (担当カラー) hex values for the dark stage theme */
+export const MEMBER_COLORS: Record<string, string> = {
+  // 現行メンバー
+  "心花りり": "#ff2b4e",   // 赤
+  "あいす": "#e0dff0",     // 白
+  "福丸うさ": "#ffd230",   // 黄色
+  "若葉のあ": "#34d399",   // 緑
+  "空詩かれん": "#3b82f6",  // 青
+  "虹羽みに": "#40d0f0",   // 水色
+  "純嶺みき": "#a855f7",   // 紫
+  "小熊まむ": "#ff8a30",   // オレンジ
+  // 元メンバー・サポートメンバー
+  "那蘭のどか": "#ff6ba0",  // ピンク
+  "有栖るな": "#a855f7",    // 紫
+  "深月らむ": "#3b82f6",    // 青
+  "天羽しおり": "#34d399",  // 緑
+  "甘音ゆあ": "#ffd230",   // 黄色
+  "向日えな": "#ff6ba0",    // ピンク
+  "涼芽なの": "#40d0f0",   // 水色
+  "日日にこり": "#ff8a30",  // オレンジ
+  "華瀬まい": "#3b82f6",   // 青
+  "こるね": "#ff8a30",     // オレンジ
+  "琥珀しえる": "#e0dff0",  // 白
 };
 
 export const DEFAULT_TEMPLATE = "{SEQ}";

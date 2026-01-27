@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { Block, Assignment } from "@/lib/types";
-import { SLOT_CANDIDATES, SLOT_THEME, BLOCK_COLORS, BLOCK_GLOW } from "@/lib/constants";
+import { SLOT_THEME, BLOCK_COLORS, BLOCK_GLOW } from "@/lib/constants";
 import { expandBlocksWithKeys } from "@/lib/slots";
+import { loadSlotCandidates } from "@/lib/settings-store";
 
 const BLOCK_LABELS: Record<string, string> = {
   A123: "A1 A2 A3",
@@ -24,6 +25,7 @@ interface Props {
 export function SlotAssignment({ blocks, assignment, onAssign, onClear, onReset, onApplyRandom }: Props) {
   const expanded = expandBlocksWithKeys(blocks);
   const [editingKey, setEditingKey] = useState<string | null>(null);
+  const slotCandidates = useMemo(() => loadSlotCandidates(), []);
 
   const handleSelect = (key: string, name: string) => {
     onAssign(key, name);
@@ -104,7 +106,7 @@ export function SlotAssignment({ blocks, assignment, onAssign, onClear, onReset,
                     {isEditing ? (
                       <div className="space-y-2">
                         <div className="flex flex-wrap gap-1">
-                          {SLOT_CANDIDATES[info.slot].map((name) => (
+                          {slotCandidates[info.slot].map((name) => (
                             <button
                               key={name}
                               onClick={() => handleSelect(info.key, name)}

@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "A-Frame Shout Builder",
-  description: "枠に名前を割り当てて、オリジナルの自己紹介パート風テキストを生成・共有",
+  title: "MYLiFE!",
+  description: "iLiFE!の自己紹介パートを自由に並べ替えて、自分だけのオリジナルを作ろう",
 };
 
 export default function RootLayout({

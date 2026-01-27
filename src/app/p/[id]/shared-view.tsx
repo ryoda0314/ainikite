@@ -100,8 +100,8 @@ export function SharedProjectView({ id }: Props) {
           <div className="flex items-center gap-3">
             <div className="w-1 h-8 rounded-full bg-gradient-to-b from-[#ff3b7f] to-[#7c5cff]" />
             <div>
-              <h1 className="font-[family-name:var(--font-display)] text-lg font-bold tracking-wider uppercase text-[#e8e6f0]">
-                A-Frame <span className="text-[#ff3b7f]">Shout</span> Builder
+              <h1 className="font-[family-name:var(--font-display)] text-lg font-bold tracking-wider text-[#e8e6f0]">
+                MY<span className="text-[#ff3b7f]">LiFE</span>!
               </h1>
               <p className="text-[11px] text-[#8b87a0] tracking-wide">共有ビュー</p>
             </div>

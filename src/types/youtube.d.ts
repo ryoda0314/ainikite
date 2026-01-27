@@ -9,6 +9,9 @@ declare namespace YT {
     seekTo(seconds: number, allowSeekAhead: boolean): void;
     loadVideoById(videoId: string, startSeconds?: number): void;
     cueVideoById(videoId: string, startSeconds?: number): void;
+    mute(): void;
+    unMute(): void;
+    isMuted(): boolean;
     getCurrentTime(): number;
     getDuration(): number;
     getPlayerState(): number;

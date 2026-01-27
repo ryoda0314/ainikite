@@ -3,7 +3,8 @@
 import { useState, useCallback } from "react";
 import type { Block, Assignment, ProjectData, MemberVideo, MemberVideos } from "./types";
 import { isSequenceLocked, expandBlocksWithKeys } from "./slots";
-import { DEFAULT_TEMPLATE, DEFAULT_MEMBER_VIDEOS, PRESETS, SLOT_CANDIDATES } from "./constants";
+import { DEFAULT_TEMPLATE, PRESETS } from "./constants";
+import { loadMemberVideos, loadSlotCandidates } from "./settings-store";
 
 export interface EditorState {
   blocks: Block[];
@@ -13,19 +14,15 @@ export interface EditorState {
   memberVideos: MemberVideos;
 }
 
-const INITIAL_STATE: EditorState = {
-  blocks: [],
-  assignment: {},
-  template: DEFAULT_TEMPLATE,
-  youtube: { videoId: "", startSec: 0 },
-  memberVideos: DEFAULT_MEMBER_VIDEOS,
-};
-
 export function useEditor(initial?: Partial<EditorState>) {
-  const [state, setState] = useState<EditorState>({
-    ...INITIAL_STATE,
+  const [state, setState] = useState<EditorState>(() => ({
+    blocks: [],
+    assignment: {},
+    template: DEFAULT_TEMPLATE,
+    youtube: { videoId: "", startSec: 0 },
+    memberVideos: loadMemberVideos(),
     ...initial,
-  });
+  }));
 
   const addBlock = useCallback((block: Block) => {
     setState((s) => {
@@ -74,10 +71,11 @@ export function useEditor(initial?: Partial<EditorState>) {
   /** Fill all positions with a random candidate for their slot type */
   const applyRandom = useCallback(() => {
     setState((s) => {
+      const slotCandidates = loadSlotCandidates();
       const expanded = expandBlocksWithKeys(s.blocks);
       const newAssignment: Assignment = { ...s.assignment };
       for (const info of expanded) {
-        const candidates = SLOT_CANDIDATES[info.slot];
+        const candidates = slotCandidates[info.slot];
         newAssignment[info.key] = candidates[Math.floor(Math.random() * candidates.length)];
       }
       return { ...s, assignment: newAssignment };
@@ -129,7 +127,7 @@ export function useEditor(initial?: Partial<EditorState>) {
       assignment: data.assignment,
       template: data.template,
       youtube: data.youtube,
-      memberVideos: (data.memberVideos && Object.keys(data.memberVideos).length > 0) ? data.memberVideos : DEFAULT_MEMBER_VIDEOS,
+      memberVideos: (data.memberVideos && Object.keys(data.memberVideos).length > 0) ? data.memberVideos : loadMemberVideos(),
     });
   }, []);
 
