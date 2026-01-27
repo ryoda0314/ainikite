@@ -31,8 +31,8 @@ export function BlockSequenceEditor({ blocks, onAdd, onRemove, onMove, onClear }
       {/* Section header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-1 h-5 rounded-full bg-[#ff3b7f]" />
-          <h3 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#ff6b9d]">
+          <div className="w-1 h-5 rounded-full bg-[#ff2b4e]" />
+          <h3 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#ff5a73]">
             Block Sequence
           </h3>
         </div>

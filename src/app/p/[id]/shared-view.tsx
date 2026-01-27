@@ -95,13 +95,13 @@ export function SharedProjectView({ id }: Props) {
     <div className="min-h-screen">
       {/* Header */}
       <header className="relative border-b border-[rgba(255,255,255,0.06)] stage-spotlight">
-        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(255,59,127,0.05)] via-transparent to-[rgba(124,92,255,0.05)]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(255,43,78,0.06)] via-[rgba(64,208,240,0.03)] to-[rgba(168,85,247,0.06)]" />
         <div className="relative mx-auto max-w-3xl px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-1 h-8 rounded-full bg-gradient-to-b from-[#ff3b7f] to-[#7c5cff]" />
+            <div className="w-1.5 h-8 rounded-full" style={{ background: 'linear-gradient(to bottom, #ff2b4e, #ff8a30, #ffd230, #34d399, #40d0f0, #3b82f6, #a855f7, #e0dff0)' }} />
             <div>
               <h1 className="font-[family-name:var(--font-display)] text-lg font-bold tracking-wider text-[#e8e6f0]">
-                MY<span className="text-[#ff3b7f]">LiFE</span>!
+                MY<span style={{ background: 'linear-gradient(to right, #ff2b4e, #ffd230, #40d0f0, #a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>LiFE</span>!
               </h1>
               <p className="text-[11px] text-[#8b87a0] tracking-wide">共有ビュー</p>
             </div>
@@ -185,7 +185,8 @@ export function SharedProjectView({ id }: Props) {
         </section>
       </main>
 
-      <footer className="border-t border-[rgba(255,255,255,0.04)] mt-16">
+      <footer className="mt-16 relative">
+        <div className="h-px" style={{ background: 'linear-gradient(to right, #ff2b4e, #ff8a30, #ffd230, #34d399, #40d0f0, #3b82f6, #a855f7, #e0dff0)', opacity: 0.3 }} />
         <div className="mx-auto max-w-3xl px-6 py-5">
           <p className="text-[11px] text-[#5a5770]">
             本サイトは元楽曲の歌詞を表示・保存・配布しません。YouTube動画はiframe埋め込みによる再生のみです。

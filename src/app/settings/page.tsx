@@ -120,11 +120,11 @@ export default function SettingsPage() {
     <div className="min-h-screen">
       {/* Header */}
       <header className="relative border-b border-[rgba(255,255,255,0.06)] stage-spotlight">
-        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(255,59,127,0.05)] via-transparent to-[rgba(124,92,255,0.05)]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(255,43,78,0.06)] via-[rgba(64,208,240,0.03)] to-[rgba(168,85,247,0.06)]" />
         <div className="relative mx-auto max-w-4xl px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-10 rounded-full bg-gradient-to-b from-[#ff3b7f] to-[#7c5cff] animate-glow-pulse" />
+              <div className="w-1.5 h-10 rounded-full animate-glow-pulse" style={{ background: 'linear-gradient(to bottom, #ff2b4e, #ff8a30, #ffd230, #34d399, #40d0f0, #3b82f6, #a855f7, #e0dff0)' }} />
               <div>
                 <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-wider uppercase text-[#e8e6f0]">
                   Settings
@@ -149,8 +149,8 @@ export default function SettingsPage() {
         <section className="glass-panel rounded-2xl p-6 space-y-5 animate-fade-up">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-5 rounded-full bg-[#ff3b7f]" />
-              <h2 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#ff6b9d]">
+              <div className="w-1 h-5 rounded-full bg-[#ff8a30]" />
+              <h2 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#ffaa60]">
                 Slot Members
               </h2>
             </div>
@@ -231,12 +231,12 @@ export default function SettingsPage() {
         <section className="glass-panel rounded-2xl p-6 space-y-5 animate-fade-up" style={{ animationDelay: "100ms" }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-1 h-5 rounded-full bg-[#00d4ff]" />
-              <h2 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#40dfff]">
+              <div className="w-1 h-5 rounded-full bg-[#40d0f0]" />
+              <h2 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#60d0f0]">
                 Member Videos
               </h2>
               {Object.keys(videos).length > 0 && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.2)] text-[#40dfff] font-mono">
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[rgba(64,208,240,0.1)] border border-[rgba(64,208,240,0.2)] text-[#60d0f0] font-mono">
                   {Object.keys(videos).filter((k) => videos[k]?.videoId).length}
                 </span>
               )}
@@ -363,7 +363,8 @@ export default function SettingsPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[rgba(255,255,255,0.04)] mt-16">
+      <footer className="mt-16 relative">
+        <div className="h-px" style={{ background: 'linear-gradient(to right, #ff2b4e, #ff8a30, #ffd230, #34d399, #40d0f0, #3b82f6, #a855f7, #e0dff0)', opacity: 0.3 }} />
         <div className="mx-auto max-w-4xl px-6 py-5">
           <p className="text-[11px] text-[#5a5770]">
             設定はブラウザのローカルストレージに保存されます。

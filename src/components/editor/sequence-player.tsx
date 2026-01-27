@@ -30,7 +30,7 @@ interface Props {
 }
 
 export function SequencePlayer({ blocks, assignment, memberVideos }: Props) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeSlot, setActiveSlot] = useState(0);
@@ -694,12 +694,12 @@ export function SequencePlayer({ blocks, assignment, memberVideos }: Props) {
         className="w-full flex items-center justify-between group"
       >
         <div className="flex items-center gap-3">
-          <div className="w-1 h-5 rounded-full bg-[#ff3b7f]" />
-          <h3 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#ff6b9d]">
+          <div className="w-1 h-5 rounded-full bg-[#3b82f6]" />
+          <h3 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#60a5fa]">
             Sequence Player
           </h3>
           {playlist.length > 0 && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[rgba(255,59,127,0.1)] border border-[rgba(255,59,127,0.2)] text-[#ff6b9d] font-mono">
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[rgba(59,130,246,0.1)] border border-[rgba(59,130,246,0.2)] text-[#60a5fa] font-mono">
               {playlist.length}
             </span>
           )}
@@ -730,7 +730,7 @@ export function SequencePlayer({ blocks, assignment, memberVideos }: Props) {
           ) : (
             <>
               {/* Player area — containers for instant swap */}
-              <div className="rounded-lg overflow-hidden border border-[rgba(255,59,127,0.15)]">
+              <div className="rounded-lg overflow-hidden border border-[rgba(59,130,246,0.15)]">
                 <div className="aspect-video bg-black relative">
                   {/* Block interaction with YouTube iframes */}
                   <div className="absolute inset-0" style={{ zIndex: 10 }} />
@@ -830,14 +830,14 @@ export function SequencePlayer({ blocks, assignment, memberVideos }: Props) {
                 {!isPlaying ? (
                   <button
                     onClick={handlePlay}
-                    className="h-9 px-5 rounded-lg text-xs font-bold tracking-wider uppercase border border-[#ff3b7f] bg-[#ff3b7f] text-white shadow-[0_0_20px_rgba(255,59,127,0.4)] transition-all duration-200 hover:bg-[#ff5a94] hover:shadow-[0_0_30px_rgba(255,59,127,0.6)]"
+                    className="h-9 px-5 rounded-lg text-xs font-bold tracking-wider uppercase border border-[#ff2b4e] bg-[#ff2b4e] text-white shadow-[0_0_20px_rgba(255,43,78,0.4)] transition-all duration-200 hover:bg-[#ff4a66] hover:shadow-[0_0_30px_rgba(255,43,78,0.6)]"
                   >
                     {currentIndex >= 0 ? "再開" : "▶ 再生"}
                   </button>
                 ) : (
                   <button
                     onClick={handlePause}
-                    className="h-7 px-3 rounded text-[10px] font-semibold tracking-wider uppercase border border-[rgba(255,59,127,0.25)] bg-[rgba(255,59,127,0.06)] text-[#ff6b9d] transition-all duration-200 hover:border-[rgba(255,59,127,0.5)] hover:bg-[rgba(255,59,127,0.12)]"
+                    className="h-7 px-3 rounded text-[10px] font-semibold tracking-wider uppercase border border-[rgba(255,43,78,0.25)] bg-[rgba(255,43,78,0.06)] text-[#ff5a73] transition-all duration-200 hover:border-[rgba(255,43,78,0.5)] hover:bg-[rgba(255,43,78,0.12)]"
                   >
                     一時停止
                   </button>

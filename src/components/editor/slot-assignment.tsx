@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { Block, Assignment } from "@/lib/types";
-import { SLOT_THEME, BLOCK_COLORS, BLOCK_GLOW } from "@/lib/constants";
+import { SLOT_THEME, BLOCK_COLORS, BLOCK_GLOW, MEMBER_COLORS } from "@/lib/constants";
 import { expandBlocksWithKeys } from "@/lib/slots";
 import { loadSlotCandidates } from "@/lib/settings-store";
 
@@ -47,8 +47,8 @@ export function SlotAssignment({ blocks, assignment, onAssign, onClear, onReset,
     <div className="space-y-5 animate-fade-up" style={{ animationDelay: "100ms" }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-1 h-5 rounded-full bg-[#ffb830]" />
-          <h3 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#ffcc66]">
+          <div className="w-1 h-5 rounded-full bg-[#ffd230]" />
+          <h3 className="font-[family-name:var(--font-display)] text-base font-semibold tracking-wider uppercase text-[#ffe066]">
             Slot Assignment
           </h3>
         </div>
@@ -99,7 +99,10 @@ export function SlotAssignment({ blocks, assignment, onAssign, onClear, onReset,
                       )}
                     </div>
 
-                    <div className="text-sm font-semibold min-h-[1.75rem] flex items-center" style={{ color: hasValue ? "#e8e6f0" : "rgba(139,135,160,0.5)" }}>
+                    <div className="text-sm font-semibold min-h-[1.75rem] flex items-center gap-1.5" style={{ color: hasValue ? "#e8e6f0" : "rgba(139,135,160,0.5)" }}>
+                      {hasValue && MEMBER_COLORS[assignment[info.key]] && (
+                        <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: MEMBER_COLORS[assignment[info.key]] }} />
+                      )}
                       {hasValue ? assignment[info.key] : "未設定"}
                     </div>
 
