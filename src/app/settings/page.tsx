@@ -305,7 +305,13 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  {isEditing && (
+                  {isEditing && (() => {
+                    const previewId = extractYouTubeId(urlInput) || urlInput.trim();
+                    const previewStart = Math.max(0, Math.floor(parseFloat(startInput) || 0));
+                    const previewEnd = Math.max(0, Math.floor(parseFloat(endInput) || 0));
+                    const hasPreview = /^[a-zA-Z0-9_-]{11}$/.test(previewId);
+
+                    return (
                     <div className="mt-3 space-y-2.5">
                       <Input
                         value={urlInput}
@@ -339,10 +345,26 @@ export default function SettingsPage() {
                           />
                         </div>
                       </div>
+
+                      {/* Video preview */}
+                      {hasPreview && (
+                        <div className="rounded-lg overflow-hidden border border-[rgba(64,208,240,0.15)]">
+                          <div className="aspect-video">
+                            <iframe
+                              key={`${previewId}-${previewStart}-${previewEnd}`}
+                              src={`https://www.youtube.com/embed/${previewId}?start=${previewStart}${previewEnd > 0 ? `&end=${previewEnd}` : ""}&rel=0&modestbranding=1`}
+                              className="w-full h-full"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                        </div>
+                      )}
+
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleApplyVideo(name)}
-                          className="h-7 px-3 rounded text-[10px] font-semibold tracking-wider uppercase border border-[rgba(0,212,255,0.25)] bg-[rgba(0,212,255,0.06)] text-[#40dfff] transition-all duration-200 hover:border-[rgba(0,212,255,0.5)] hover:bg-[rgba(0,212,255,0.12)]"
+                          className="h-7 px-3 rounded text-[10px] font-semibold tracking-wider uppercase border border-[rgba(64,208,240,0.25)] bg-[rgba(64,208,240,0.06)] text-[#60d0f0] transition-all duration-200 hover:border-[rgba(64,208,240,0.5)] hover:bg-[rgba(64,208,240,0.12)]"
                         >
                           反映
                         </button>
@@ -354,7 +376,8 @@ export default function SettingsPage() {
                         </button>
                       </div>
                     </div>
-                  )}
+                    );
+                  })()}
                 </div>
               );
             })}
