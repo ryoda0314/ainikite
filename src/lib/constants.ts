@@ -16,7 +16,7 @@ export function isTerminalBlock(b: Block): boolean {
 /** Recommended candidates per slot */
 export const SLOT_CANDIDATES: Record<Slot, string[]> = {
   A1: ["心花りり", "虹羽みに"],
-  A2: ["深月らむ", "向日えな", "福丸うさ", "涼芽なの", "那蘭のどか"],
+  A2: ["深月らむ", "向日えな", "福丸うさ", "涼芽なの", "那蘭のどか", "恋星はるか"],
   A3: ["天羽しおり", "若葉のあ", "日日にこり", "空詩かれん", "甘音ゆあ"],
   B1: ["純嶺みき", "華瀬まい"],
   B2: ["有栖るな", "小熊まむ", "こるね"],
@@ -144,6 +144,9 @@ export const DEFAULT_MEMBER_VIDEOS: MemberVideos = {
   "有栖るな": { videoId: "rhb0CsHfmLo", startSec: 160.42, endSec: 171.1 },
   "涼芽なの": { videoId: "6Spe-x03YfU", startSec: 115.8, endSec: 126.2 },
   "日日にこり": { videoId: "6Spe-x03YfU", startSec: 126.59, endSec: 166.5 },
+  "こるね": { videoId: "J-R6AxjyE8g", startSec: 154.7, endSec: 165.5 },
+  "華瀬まい": { videoId: "6Spe-x03YfU", startSec: 167, endSec: 177 },
+  "恋星はるか": { videoId: "JyE65FU1RLg", startSec: 114.1, endSec: 124.68 },
 };
 
 /** Member color (担当カラー) hex values for the dark stage theme */
@@ -168,6 +171,7 @@ export const MEMBER_COLORS: Record<string, string> = {
   "日日にこり": "#ff8a30",  // オレンジ
   "華瀬まい": "#3b82f6",   // 青
   "こるね": "#ff8a30",     // オレンジ
+  "恋星はるか": "#ff6ba0",   // ピンク
   "琥珀しえる": "#e0dff0",  // 白
 };
 
